@@ -16,4 +16,4 @@ app/config/parameters.yml
 composer.phar
 
 # htaccess file
-we/.htaccess
+web/.htaccess
