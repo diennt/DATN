@@ -5,7 +5,7 @@
         <title>{% block title %}Management Suit!{% endblock title %}</title>
         {% stylesheets filter='lessphp'
             "@MopaBootstrapBundle/Resources/public/less/mopabootstrapbundle.less"
-            "@TarazzCoreBundle/Resources/public/css/style.css"
+            "css/style.css"
             output="application.css"
         %} <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
         {% endstylesheets%}
@@ -23,13 +23,26 @@
                     <h1>Management Suit</h1>
                 </div>
             </div>
-        </haeder>
+        </header>
+
+        <div class="navbar">
+            {% block navbar %}
+                <div class="navbar-inner">
+                    <div class="container-fluid">
+                        <ul class="nav">
+                            <li><a class="active" href="#">Menu 1</a></li>
+                            <li><a href="#">Menu 2</a></li>
+                            <li><a href="#">Menu 3</a></li>
+                            <li><a href="#">Menu 4</a></li>
+                            <li><a href="#">Menu 5</a></li>
+                            <li><a href="#">Menu 6</a></li>
+                        </ul>
+                    </div>
+                </div>
+            {% endblock navbar%}
+        </div>
 
         <div class="container-fluid">
-            <div class="navbar row-fluid">
-                {% block navbar %}
-                {% endblock navbar%}
-            </div>
 
             <div class="breadcrumbs row-fluid">
                 {% block breadcrumbs %}
@@ -49,7 +62,10 @@
             </div>
         </footer>
         {% endblock %}
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         {% javascripts filter='yui_js'
+            "@MopaBootstrapBundle/Resources/bootstrap/js/*.js"
             output="application.js"
         %} <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}

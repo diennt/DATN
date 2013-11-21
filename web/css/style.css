@@ -1,0 +1,50 @@
+/* ==========================================================================
+                            Project's custom styles
+   ========================================================================== */
+@font-face {
+    font-family: 'helveticabold';
+    src: url('../font/helvetica-bold-webfont.eot');
+    src: url('../font/helvetica-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../font/helvetica-bold-webfont.woff') format('woff'),
+         url('../font/helvetica-bold-webfont.ttf') format('truetype'),
+         url('../font/helvetica-bold-webfont.svg#helveticabold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'helveticaregular';
+    src: url('../font/4864-webfont.eot');
+    src: url('../font/4864-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../font/4864-webfont.woff') format('woff'),
+         url('../font/4864-webfont.ttf') format('truetype'),
+         url('../font/4864-webfont.svg#helveticaregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'museo500';
+    src: url('../font/museo500-regular-webfont.eot');
+    src: url('../font/museo500-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../font/museo500-regular-webfont.woff') format('woff'),
+         url('../font/museo500-regular-webfont.ttf') format('truetype'),
+         url('../font/museo500-regular-webfont.svg#museo500') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+body {font-family:'helveticaregular', arial, sans-serif;color:#222;}
+a {color:#5eadbd;}
+:focus {outline:0;}
+
+/*======================================== Header ========================================*/
+
+.container-fluid {max-width:1170px; margin:0 auto;padding:0;}
+
+/*======================================== Navbar ========================================*/
+.navbar-inner { border-radius: 0;}
+.navbar .nav > li > a:hover {background: url("../img/bg_menu.gif") repeat-x scroll 0 0 rgba(0,0,0,0); color: #FFF;}

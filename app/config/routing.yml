@@ -1,4 +1,1 @@
-tarazz_core:
-    resource: "@TarazzCoreBundle/Resources/config/routing.xml"
-    prefix:   /
 
