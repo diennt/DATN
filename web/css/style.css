@@ -44,6 +44,10 @@ a {color:#5eadbd;}
 /*======================================== Header ========================================*/
 
 .container-fluid {max-width:1170px; margin:0 auto;padding:0;}
+header .container-fluid {padding: 25px 0 20px;}
+header .pull-right {text-align:right;font-size:12px;}
+header .pull-right h1 {color:#222;font-size:24px;margin:-7px 0 0;font-weight:normal;line-height:30px;font-family:"museo500", arial, sans-serif;}
+header .pull-right a {margin-left:5px}
 
 /*======================================== Navbar ========================================*/
 .navbar-inner { border-radius: 0;}

@@ -15,14 +15,16 @@
     <body>
         {% block body %}
         <header>
-            <div class="container-fluid">
-                <div class="pull-left">
-                    <h1>Logo</h1>
+            {% block header %}
+                <div class="container-fluid">
+                    <div class="pull-left">
+                        <h1>Logo</h1>
+                    </div>
+                    <div class="pull-right">
+                        <h1>Management Suit</h1>
+                    </div>
                 </div>
-                <div class="pull-right">
-                    <h1>Management Suit</h1>
-                </div>
-            </div>
+            {% endblock header %}
         </header>
 
         <div class="navbar">
