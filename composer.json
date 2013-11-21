@@ -19,7 +19,6 @@
         "sensio/framework-extra-bundle": "2.3.*",
         "sensio/generator-bundle": "2.3.*",
         "incenteev/composer-parameter-handler": "~2.0",
-        "mopa/bootstrap-bundle": "v3.0.0-beta2",
         "mopa/bootstrap-bundle": "2.3.x-dev",
         "twbs/bootstrap": "v2.3.2",
         "knplabs/knp-menu-bundle": "dev-master",
