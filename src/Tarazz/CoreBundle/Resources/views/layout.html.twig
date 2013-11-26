@@ -10,11 +10,11 @@
         <div class="pull-right">
             <h1>Management Suite</h1>
 
-            {% if true %}
-                <p class="pull-right">
-                    You are logged in as {{ 'diennt' }}
-                    <a href="#">Logout</a>
-                </p>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                <a href="{{ path('fos_user_security_logout') }}">
+                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                </a>
             {% endif %}
         </div>
     </div>

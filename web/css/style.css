@@ -52,3 +52,9 @@ header .pull-right a {margin-left:5px}
 /*======================================== Navbar ========================================*/
 .navbar-inner { border-radius: 0;}
 .navbar .nav > li > a:hover {background: url("../img/bg_menu.gif") repeat-x scroll 0 0 rgba(0,0,0,0); color: #FFF;}
+
+/*======================================== Login ========================================*/
+.login-container {max-width: 600px; margin: 40px auto; padding: 10px;}
+.login-content {background-color: #FFF; padding: 20px;}
+.login-content h3 {font-family:"museo500", arial, sans-serif; font-weight: normal; margin-left:80px;}
+.login-content .text-error {margin-left:80px;}

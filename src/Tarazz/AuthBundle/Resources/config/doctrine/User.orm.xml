@@ -7,8 +7,5 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="groupId" type="integer" column="group_id" nullable="true"/>
-        <field name="timeZoneId" type="integer" column="time_zone_id"/>
-
     </entity>
 </doctrine-mapping>

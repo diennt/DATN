@@ -1,0 +1,57 @@
+{% extends "TarazzAuthBundle::layout.html.twig" %}
+
+{% block body -%}
+    <div class="container-fluid login-container">
+        <header>
+            <div class="container-fluid login-header">
+                <div class="pull-left">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo"/>
+                </div>
+                <div class="pull-right">
+                    <h1>Management Suite</h1>
+                </div>
+            </div>
+        </header>
+
+        <div class="container-fluid login-content well">
+            <h3>{{ 'Sign In' }}</h3>
+
+            {% if error %}
+                <div class="text-error">{{ error|trans({}, 'FOSUserBundle') }}</div>
+            {% endif %}
+            {% block flashes %}
+                {{ parent() }}
+            {% endblock flashes %}
+
+            <form action="{{ path("fos_user_security_check") }}" method="post" class="form-horizontal"
+                  autocomplete="off">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+
+                <div class="control-group">
+                    <label for="username" class="control-label">User Name</label>
+
+                    <div class="controls">
+                        <input type="text" id="username" name="_username" value="{{ last_username }}"
+                               required="required"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="password" class="control-label">Pass Word</label>
+
+                    <div class="controls">
+                        <input type="password" id="password" name="_password" required="required"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" id="_submit" name="_submit" class="btn btn btn-danger"
+                               value="Sign In"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
