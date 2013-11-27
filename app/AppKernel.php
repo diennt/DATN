@@ -18,8 +18,12 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new APY\DataGridBundle\APYDataGridBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Tarazz\CoreBundle\TarazzCoreBundle(),
             new Tarazz\AuthBundle\TarazzAuthBundle(),
+            new Tarazz\BrandBundle\TarazzBrandBundle(),
+            new Tarazz\ProductBundle\TarazzProductBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

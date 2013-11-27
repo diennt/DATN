@@ -4,17 +4,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
-    <parameters>
-        <parameter key="tarazz_core.example.class">Tarazz\CoreBundle\Example</parameter>
-    </parameters>
+    <!--<parameters>-->
+        <!--<parameter key="tarazz_core.abstract_grid.class">Tarazz\CoreBundle\Grid\AbstractGrid</parameter>-->
+    <!--</parameters>-->
 
-    <services>
-        <service id="tarazz_core.example" class="%tarazz_core.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
-        </service>
-    </services>
-    -->
+    <!--<services>-->
+        <!--<service id="tarazz_core.abstract_grid" class="%tarazz_core.abstract_grid.class%" scope="prototype">-->
+            <!--<argument type="service" id="service_container" />-->
+            <!--<argument type="service" id="grid" />-->
+        <!--</service>-->
+    <!--</services>-->
 </container>

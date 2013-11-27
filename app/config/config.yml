@@ -75,3 +75,14 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Tarazz\AuthBundle\Entity\User
+
+# APY datagrid
+apy_data_grid:
+    limits: {5: '5 per page', 10: '10 per page', 15: '15 per page', 20: '200 per page'}
+    no_data_message: false
+    pagerfanta:
+        enable: true    #default false
+        view_class: Pagerfanta\View\TwitterBootstrapView #default    Pagerfanta\View\DefaultView
+        options:            #all options of pager fanta view constructor
+            prev_message : prev
+            next_message : next

@@ -1,0 +1,250 @@
+{% extends 'APYDataGridBundle::blocks.html.twig' %}
+
+{# ------------------------------------------------------ grid ------------------------------------------------------ #}
+{% block grid %}
+
+    <div class="span12 grid">
+
+        {% if grid.totalCount > 0 or grid.isFiltered or grid.noDataMessage is sameas(false) %}
+
+            <form id="{{ grid.hash }}" action="{{ grid.routeUrl }}" method="post">
+
+                <table class="table table-bordered table-hover table-row-click">
+                    <thead>
+                    {% if grid.isTitleSectionVisible %}
+                        {{ grid_titles(grid) }}
+                    {% endif %}
+                    </thead>
+                    <tbody>
+                    {{ grid_rows(grid) }}
+                    </tbody>
+                </table>
+
+                <div class="row-fluid">
+                    <div class="span5">
+                        {% if grid.massActions|length > 0 %}
+                            {{ grid_actions(grid) }}
+                        {% endif %}
+                    </div>
+
+                    <div class="span7 page-dashboard">
+                        {% if grid.isPagerSectionVisible %}
+                            {{ grid_pager(grid) }}
+                        {% endif %}
+                        {% if grid.exports|length > 0 %}
+                            {{ grid_exports(grid) }}
+                        {% endif %}
+                        {% if grid.tweaks|length > 0 %}
+                            {{ grid_tweaks(grid) }}
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if withjs %}
+                    {{ grid_scripts(grid) }}
+                {% endif %}
+
+            </form>
+
+        {% else %}
+
+            {{ grid_no_data(grid) }}
+
+        {% endif %}
+
+    </div>
+
+{% endblock grid %}
+
+
+{# --------------------------------------------------- grid_titles -------------------------------------------------- #}
+{% block grid_titles %}
+    <tr class="grid-row-titles">
+        {% for column in grid.columns %}
+            {# Hide all actions #}
+            {% if column.visible(grid.isReadyForExport) and column.id != '__actions' %}
+                <th class="{% if column.align != 'left' %}align-{{ column.align }}{% endif %}{% if loop.last %} last-column{% endif %}"{% if(column.size > -1) %} style="width:{{ column.size }}px;"{% endif %}>
+
+                    {%- spaceless %}
+                        <p>
+                        {% if column.type == 'massaction' %}
+                            <input type="checkbox" id="{{ grid.hash }}_mass_action_all" class="grid-mass-selector"
+                                   onclick="{{ grid
+                                   .hash }}_markVisible(this.checked);"/>
+                        {% else %}
+                            {% set columnTitle = grid.prefixTitle ~ column.title ~ '__abbr' %}
+                            {% if columnTitle|trans == columnTitle %}
+                                {% set columnTitle = grid.prefixTitle ~ column.title %}
+                            {% endif %}
+                            {% if (column.sortable) %}
+                                <a class="order" href="{{ grid_url('order', grid, column) }}"
+                                   title="{{ 'Order by'|trans }} {{ columnTitle|trans }}">{{ columnTitle|trans }}</a>
+                                {% if column.order == 'asc' %}
+                                    <div class="sort_up"></div>
+                                {% elseif column.order == 'desc' %}
+                                    <div class="sort_down"></div>
+                                {% endif %}
+                            {% else %}
+                                {{ columnTitle|trans }}
+                            {% endif %}
+                        {% endif %}
+                        </p>
+
+                        <p>
+                            {% if grid.isFilterSectionVisible %}
+                                {% if column.filterable %}
+                                    {% if column.id == '__action' %}
+                                        {{ grid_filter(column, grid)|raw }}
+                                    {% else %}
+                                        (<a href="#" class="popover-handle {% if column.type == 'dqlDateTimeColumn' %}date-time-column{% endif %}" data-html="true" data-placement="bottom"
+                                            data-content="{{ grid_filter(column, grid)|escape }}">filter</a>)
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </p>
+
+                    {% endspaceless -%}
+                </th>
+            {% endif %}
+        {% endfor %}
+    </tr>
+{% endblock grid_titles %}
+
+
+{# -------------------------------------------------- grid_filters -------------------------------------------------- #}
+{% block grid_filters %}
+    <tr class="grid-row-filters">
+        {% for column in grid.columns %}
+            {# Hide all actions #}
+            {% if column.visible(grid.isReadyForExport) and column.id != '__actions' %}
+                <th{% if loop.last %} class="last-column"{% endif %}{% if(column.size > -1) %} style="width:{{ column.size }}px;"{% endif %}>{% if column.filterable %}{{ grid_filter(column, grid)|raw }}{% endif %}</th>
+            {% endif %}
+        {% endfor %}
+    </tr>
+{% endblock grid_filters %}
+
+
+{# ---------------------------------------------------- grid_rows --------------------------------------------------- #}
+{% block grid_rows %}
+
+    {% for row in grid.rows %}
+
+        {% set edit = false %}
+        {% set routeEdit = '' %}
+        {% set routeParam = '' %}
+        {% set targetEdit = '' %}
+
+        {# Get last column, which is action column #}
+        {% for column in grid.columns %}
+            {% if column.id == '__actions' %}
+                {% if column.getRowActions is defined %}
+                    {% set actions = column.getActionsToRender(row) %}
+                    {% for action in actions %}
+                        {% if (action.title == 'Edit') %}
+                            {% set edit = true %}
+                            {% set routeEdit = action.route %}
+                            {% set routeParam =  column.routeParameters(row, action) %}
+                            {% set targetEdit = action.target %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        {% set last_row = loop.last %}
+
+        {% spaceless %}
+            <tr{% if row.color != '' %} style="background-color:{{ row.color }};"{% endif %}
+                    class="grid-row-cells {{ cycle(['odd', 'even'], loop.index) }}{% if row.class != '' %} {{ row.class }}{% endif %}" {% if edit %}data-url="{{ path(routeEdit, routeParam)|e }}"{% endif %}>
+                {% for column in grid.columns %}
+                    {% if column.visible(grid.isReadyForExport) and column.id != '__actions' %}
+                        <td class="grid-column-{{ column.id }}{% if column.align != 'left' %} align-{{ column.align }}{% endif %}{% if loop.last %} last-column{% endif %}{% if last_row %} last-row{% endif %}">{{ grid_cell(column, row, grid)|raw }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endspaceless %}
+
+    {% else %}
+
+        {{ grid_no_result(grid) }}
+
+    {% endfor %}
+
+{% endblock grid_rows %}
+
+
+{# --------------------------------------------------- grid_actions ------------------------------------------------- #}
+{% block grid_actions %}
+    <div class="row-fluid">
+
+        <div class="span2">
+            <div style="display: none">
+                <span class="mass-actions-selected" id="{{ grid.hash }}_mass_action_selected"></span>
+            </div>
+            <a href="#" class="select-all"
+               onclick="return {{ grid.hash }}_markVisible(true);">{{ 'Select all'|trans }}</a>
+        </div>
+
+        <div class="span7">
+            <p class="pull-right">
+                {{ 'With selected, do:'|trans }}
+
+                <select name="{{ grid.hash }}[{{ constant('APY\\DataGridBundle\\Grid\\Grid::REQUEST_QUERY_MASS_ACTION') }}]"
+                        class="on-change-submit input-medium">
+                    <option value="-1">Choose an action</option>
+
+                    {% for key, massAction in grid.massActions %}
+                        <option value="{{ key }}">{{ massAction.title|trans }}</option>
+                    {% endfor %}
+
+                </select>
+            </p>
+        </div>
+
+    </div>
+{% endblock grid_actions %}
+
+
+{# ---------------------------------------------------- grid_pager -------------------------------------------------- #}
+{% block grid_pager %}
+    {% if pagerfanta %}
+        <div class="row-fluid">
+            <div class="span9">
+                <div class="pull-right w640" id="grid_{{ grid.id }}">
+                    {{ grid_pagerfanta(grid) }}
+                    <div style="display: none;">
+                        <ul>
+                            {% if grid.page > 0 %}
+                                <li class="first"><a class="icon-backward" href="{{ grid_url('page', grid, '') }}0">first</a></li>
+                            {% else %}
+                                <li class="first disabled"><a class="icon-backward" >first</a></li>
+                            {% endif %}
+                            {% if grid.page < grid.pageCount - 1 %}
+                                <li class="last"><a  class="icon-forward" href="{{ grid_url('page', grid, '') }}{{ grid.pageCount - 1 }}">last</a></li>
+                            {% else %}
+                                <li class="last disabled"><a class="icon-forward">last</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="span3">{{ grid_pager_results_perpage(grid) }}</div>
+        </div>
+    {% else %}
+        <div class="pager" style="float:left">
+            {{ grid_pager_totalcount(grid) }}
+            {{ grid_pager_selectpage(grid) }}
+            {{ grid_pager_results_perpage(grid) }}
+        </div>
+    {% endif %}
+{% endblock grid_pager %}
+
+
+{# ---------------------------------------------------- grid_pager_results_perpage -------------------------------------------------- #}
+{% block grid_pager_results_perpage %}
+    <select onchange="return {{ grid.hash }}_resultsPerPage(this.value);" class="span12 pagination">
+        {% for key, value in grid.limits %}
+            <option value="{{ key }}"{% if (key == grid.limit) %} selected="selected"{% endif %}>{{ value }}</option>
+        {% endfor %}
+    </select>
+{% endblock grid_pager_results_perpage %}
