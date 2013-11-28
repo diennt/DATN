@@ -10,13 +10,13 @@
 namespace Tarazz\BrandBundle\Grid;
 
 use APY\DataGridBundle\Grid\Action\MassAction;
-use APY\DataGridBundle\Grid\Action\RowAction;
-use APY\DataGridBundle\Grid\Column\BlankColumn;
 use APY\DataGridBundle\Grid\Column\Column;
 use APY\DataGridBundle\Grid\Column\NumberColumn;
 use Doctrine\ORM\QueryBuilder;
 use Tarazz\CoreBundle\Grid\AbstractGrid;
-use APY\DataGridBundle\Grid\Source\Entity;
+use Tarazz\CoreBundle\Grid\Column\DqlTextColumn;
+use Tarazz\CoreBundle\Grid\Source\Entity;
+use Tarazz\CoreBundle\Grid\Column\DqlNumberColumn;
 
 class BrandGrid extends AbstractGrid
 {
@@ -36,7 +36,9 @@ class BrandGrid extends AbstractGrid
                 $ra = $qb->getRootAliases();
                 $a = reset($ra);
 
-                $qb->andWhere($qb->expr()->isNull("{$a}.parentId"));
+                $qb
+                    ->leftJoin("{$a}.products", "p")
+                    ->andWhere($qb->expr()->isNull("{$a}.parentId"));
             }
         );
 
@@ -62,21 +64,45 @@ class BrandGrid extends AbstractGrid
         $this->grid->addMassAction($inactiveAction);
 
         // Add row action ( Edit action)
-//        $editAction = new RowAction('Edit', 'tarazz_brand.brand_detail');
-//        $this->grid->addRowAction($editAction);
+        // $editAction = new RowAction('Edit', 'tarazz_brand.brand_detail');
+        // $this->grid->addRowAction($editAction);
 
         // Add columns to the grid
-
         // ID column
-        $idColumn = new NumberColumn(array(
+        $idColumn = new DqlNumberColumn(array(
+            'id' => "idCol",
             'title' => 'ID',
-            'id' => 'id',
-            'field' => 'id',
-            'source' => true,
-            'sortable' => true
+            'source' => true
         ));
+        $idColumn->setDqlField("__root__.id", "idCol");
         $this->grid->addColumn($idColumn);
 
+        // Name column
+        $nameColumn = new DqlTextColumn(array(
+            'id' => "nameCol",
+            'title' => 'Name',
+            'source' => true
+        ));
+        $nameColumn->setDqlField("__root__.name", "nameCol");
+        $this->grid->addColumn($nameColumn);
+
+        // Active Column
+        $activeColumn = new DqlTextColumn(array(
+            'id' => "activeCol",
+            'title' => 'Active',
+            'source' => true
+        ));
+        $activeColumn->setDqlField("__root__.active", "activeCol");
+        $this->grid->addColumn($activeColumn);
+
+        // Products Column
+        $productsColumn = new DqlTextColumn(array(
+            'id' => "productsCol",
+            'title' => 'Products',
+            'source' => true
+        ));
+        $productsColumn->setDqlField("COUNT(p.id)", "productsCol");
+        $this->grid->addColumn($productsColumn);
     }
 
     /**
