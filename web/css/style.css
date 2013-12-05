@@ -58,3 +58,6 @@ header .pull-right a {margin-left:5px}
 .login-content {background-color: #FFF; padding: 20px;}
 .login-content h3 {font-family:"museo500", arial, sans-serif; font-weight: normal; margin-left:80px;}
 .login-content .text-error {margin-left:80px;}
+
+/*======================================== Login ========================================*/
+.grid tbody tr td {cursor: pointer;}

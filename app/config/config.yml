@@ -78,7 +78,7 @@ fos_user:
 
 # APY datagrid
 apy_data_grid:
-    limits: {5: '5 per page', 10: '10 per page', 15: '15 per page', 20: '200 per page'}
+    limits: {5: '5 per page', 10: '10 per page', 15: '15 per page', 20: '20 per page'}
     no_data_message: false
     pagerfanta:
         enable: true    #default false

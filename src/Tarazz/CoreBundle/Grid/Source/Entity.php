@@ -10,7 +10,6 @@ namespace Tarazz\CoreBundle\Grid\Source;
 
 use APY\DataGridBundle\Grid\Column\Column;
 use APY\DataGridBundle\Grid\Source\Entity as BaseEntity;
-use Doctrine\ORM\NoResultException;
 use Tarazz\CoreBundle\Grid\Column\DqlColumn;
 use APY\DataGridBundle\Grid\Helper\ORMCountWalker;
 use Doctrine\ORM\Query;
@@ -34,7 +33,7 @@ class Entity extends BaseEntity
      */
     protected function getFieldName($column, $withAlias = -1)
     {
-        if ('dql' === $column->getType() ) {
+        if ('dql' === $column->getType()) {
             /** @var $column DqlColumn */
             $dqlFieldExpr = $column->getDqlFieldExpr();
 
@@ -56,33 +55,5 @@ class Entity extends BaseEntity
         }
 
         return parent::getFieldName($column, $withAlias);
-    }
-
-    /**
-     * @param null $maxResults
-     *
-     * @return int|number
-     */
-    public function getTotalCount($maxResults = null)
-    {
-        // From Doctrine\ORM\Tools\Pagination\Paginator::count()
-        $countQuery = $this->query->getQuery();
-
-        if (!$countQuery->getHint(ORMCountWalker::HINT_DISTINCT)) {
-            $countQuery->setHint(ORMCountWalker::HINT_DISTINCT, true);
-        }
-
-        $countQuery->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Tarazz\CoreBundle\Grid\Helper\ORMCountWalker'));
-        $countQuery->setFirstResult(null)->setMaxResults($maxResults);
-
-        try {
-            $data  = $countQuery->getScalarResult();
-            $data  = array_map('current', $data);
-            $count = array_sum($data);
-        } catch (NoResultException $e) {
-            $count = 0;
-        }
-
-        return $count;
     }
 }

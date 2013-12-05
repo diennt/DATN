@@ -1,0 +1,12 @@
+{% extends 'TarazzBrandBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="row-fluid">
+        <h1>{{ id }}</h1>
+    </div>
+    <form action="{{ path('tarazz_brand_detail', { 'id': id }) }}" method="post" {{ form_enctype(form) }}>
+        <div class="row-fluid">
+            {{ form_widget(form) }}
+        </div>
+    </form>
+{% endblock %}

@@ -7,4 +7,9 @@
     <route id="tarazz_brand_grid" pattern="/">
         <default key="_controller">TarazzBrandBundle:Brand:grid</default>
     </route>
+
+    <route id="tarazz_brand_detail" pattern="/{id}/detail">
+        <default key="_controller">TarazzBrandBundle:Brand:detail</default>
+        <option key="id">\d+</option>
+    </route>
 </routes>

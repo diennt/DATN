@@ -1,1 +1,11 @@
 {% extends 'TarazzCoreBundle:Grid:grid_template.html.twig' %}
+
+{% block grid_column_activeCol_cell %}
+    {% if value == 1 %} {{ 'Yes' }} {% else %} {{ 'No' }} {% endif %}
+{% endblock grid_column_activeCol_cell %}
+
+{% block grid_column_logoCol_cell %}
+    <div class="span12">
+        <img src="{{ value }}" alt="logo image"/>
+    </div>
+{% endblock grid_column_logoCol_cell %}

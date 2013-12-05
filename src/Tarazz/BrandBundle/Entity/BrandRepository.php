@@ -3,6 +3,7 @@
 namespace Tarazz\BrandBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Tarazz\BrandBundle\Entity\Brand;
 
 /**
  * BrandRepository
@@ -12,4 +13,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class BrandRepository extends EntityRepository
 {
+    /**
+     * Get brands by id array
+     *
+     * @param $ids
+     *
+     * @return Brand[]
+     */
+    public function getBrands($ids)
+    {
+        $brands = array();
+
+        if (!empty($ids)) {
+            $qb = $this->createQueryBuilder('b');
+
+            $brands = $qb->where($qb->expr()->in('b.id', ':ids'))
+                ->setParameter('ids', $ids)
+                ->getQuery()
+                ->getResult();
+        }
+
+        return $brands;
+    }
 }

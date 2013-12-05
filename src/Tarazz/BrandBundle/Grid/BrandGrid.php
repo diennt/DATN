@@ -10,13 +10,17 @@
 namespace Tarazz\BrandBundle\Grid;
 
 use APY\DataGridBundle\Grid\Action\MassAction;
+use APY\DataGridBundle\Grid\Action\RowAction;
 use APY\DataGridBundle\Grid\Column\Column;
 use APY\DataGridBundle\Grid\Column\NumberColumn;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Tarazz\CoreBundle\Grid\AbstractGrid;
 use Tarazz\CoreBundle\Grid\Column\DqlTextColumn;
 use Tarazz\CoreBundle\Grid\Source\Entity;
 use Tarazz\CoreBundle\Grid\Column\DqlNumberColumn;
+use Tarazz\BrandBundle\Entity\Brand;
 
 class BrandGrid extends AbstractGrid
 {
@@ -38,7 +42,8 @@ class BrandGrid extends AbstractGrid
 
                 $qb
                     ->leftJoin("{$a}.products", "p")
-                    ->andWhere($qb->expr()->isNull("{$a}.parentId"));
+                    ->andWhere($qb->expr()->isNull("{$a}.parentId"))
+                    ->groupBy("{$a}.id");
             }
         );
 
@@ -58,14 +63,14 @@ class BrandGrid extends AbstractGrid
         }
 
         // Add mass action
-        $activeAction = new MassAction('Mark as active', array('markAsActive'));
+        $activeAction = new MassAction('Mark as active', array($this, 'markAsActive'));
         $this->grid->addMassAction($activeAction);
-        $inactiveAction = new MassAction('Mark as inactive', array('markAsInactive'));
+        $inactiveAction = new MassAction('Mark as inactive', array($this, 'markAsInactive'));
         $this->grid->addMassAction($inactiveAction);
 
         // Add row action ( Edit action)
-        // $editAction = new RowAction('Edit', 'tarazz_brand.brand_detail');
-        // $this->grid->addRowAction($editAction);
+         $editAction = new RowAction('Edit', 'tarazz_brand_detail');
+         $this->grid->addRowAction($editAction);
 
         // Add columns to the grid
         // ID column
@@ -103,25 +108,78 @@ class BrandGrid extends AbstractGrid
         ));
         $productsColumn->setDqlField("COUNT(p.id)", "productsCol");
         $this->grid->addColumn($productsColumn);
+
+        // Logo column
+        $logoColumn = new DqlTextColumn(array(
+            'id' => "logoCol",
+            'title' => 'Logo',
+            'source' => true
+        ));
+        $logoColumn->setDqlField("__root__.logo", "logoCol");
+        $this->grid->addColumn($logoColumn);
     }
 
     /**
      * Action set active list of brands
      *
      * @param array $ids
+     *
+     * @return bool
      */
-    public function markAsActive(array $ids)
+    public function markAsActive($ids)
     {
+        /** @var $em EntityManager */
+        $em = $this->container->get('doctrine')->getManager();
+        $em->beginTransaction();
+        try{
+            $brandRepo = $em->getRepository('TarazzBrandBundle:Brand');
+            $brands = $brandRepo->getBrands($ids);
 
+            /** @var $brands Brand[] */
+            foreach($brands as $b) {
+                $b->setActive(true);
+                $em->flush($b);
+            }
+
+            $em->commit();
+        } catch (Exception $e) {
+            $em->rollback();
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
      * Action set inactive list of brand
      *
      * @param array $ids
+     *
+     * @return bool
      */
     public function markAsInactive(array $ids)
     {
+        /** @var $em EntityManager */
+        $em = $this->container->get('doctrine')->getManager();
+        $em->beginTransaction();
+        try{
+            $brandRepo = $em->getRepository('TarazzBrandBundle:Brand');
+            $brands = $brandRepo->getBrands($ids);
 
+            /** @var $brands Brand[] */
+            foreach($brands as $b) {
+                $b->setActive(false);
+                $em->flush($b);
+            }
+
+            $em->commit();
+        } catch (Exception $e) {
+            $em->rollback();
+
+            return false;
+        }
+
+        return true;
     }
 }

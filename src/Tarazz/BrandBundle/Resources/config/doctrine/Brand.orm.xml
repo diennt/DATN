@@ -11,6 +11,8 @@
 
         <field name="name" type="string" column="name" length="255" nullable="false" />
         <field name="logo" type="string" column="logo" length="255" nullable="true" />
+        <field name="title" type="string" column="title" length="1024" nullable="true" />
+        <field name="description" type="string" column="description" length="1024" nullable="true" />
         <field name="active" type="boolean" column="active" nullable="true" />
         <field name="parentId" type="integer" column="parent_id" nullable="true" />
         <field name="created" type="datetime" column="created" nullable="false" />
