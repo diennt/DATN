@@ -51,7 +51,11 @@ header .pull-right a {margin-left:5px}
 
 /*======================================== Navbar ========================================*/
 .navbar-inner { border-radius: 0;}
-.navbar .nav > li > a:hover {background: url("../img/bg_menu.gif") repeat-x scroll 0 0 rgba(0,0,0,0); color: #FFF;}
+.navbar .nav > li > a {padding: 10px 13px}
+.navbar .nav > li > a:hover, .navbar .nav > .active > a, .navbar .nav > .active > a:hover,
+.navbar .nav > .active > a:focus {background: url("../img/bg_menu.gif") repeat-x scroll 0 0 rgba(0,0,0,0); color: #FFF;}
+.navbar .nav > li > a {text-shadow:0 0 0 transparent;color:#797979}
+.navbar .nav li.dropdown > .dropdown-toggle:hover .caret {border-bottom-color:#FFF;border-top-color:#FFF;}
 
 /*======================================== Login ========================================*/
 .login-container {max-width: 600px; margin: 40px auto; padding: 10px;}
@@ -59,5 +63,19 @@ header .pull-right a {margin-left:5px}
 .login-content h3 {font-family:"museo500", arial, sans-serif; font-weight: normal; margin-left:80px;}
 .login-content .text-error {margin-left:80px;}
 
-/*======================================== Login ========================================*/
+/*======================================== content ========================================*/
 .grid tbody tr td {cursor: pointer;}
+
+.breadcrumb {color:#ccc;background:none;border-radius:0;padding:8px 0;margin-bottom:13px;}
+.breadcrumb > li {text-shadow:0 0 0 transparent;}
+.breadcrumb > li  a {}
+.breadcrumb > .active {color:#797979}
+
+.table  {font-size:14px;color:#222;}
+.table th  {font-weight:normal;font-family: 'helveticabold';font-size:14px;}
+.table thead th {vertical-align:top;}
+.table th a, .sortable {color:#222;}
+.table th a.popover-handle {color: #5eadbd}
+.table .dropdown {font-family:'helveticaregular';font-size:12px;}
+.table .dropdown .dropdown-toggle {color:#5eadbd;}
+.table ul {list-style:none;margin:0;}

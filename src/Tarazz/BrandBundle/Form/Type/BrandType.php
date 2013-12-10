@@ -38,8 +38,15 @@ class BrandType extends AbstractType
     {
         $builder
             ->add('name', 'text')
-            ->add('title', 'text')
-            ->add('description', 'text')
+            ->add('title', 'text', array(
+                'required' => false
+            ))
+            ->add('description', 'text', array(
+                'required' => false
+            ))
+            ->add('active', 'checkbox', array(
+                'required' => false
+            ))
             ->add('save', 'submit')
         ;
     }

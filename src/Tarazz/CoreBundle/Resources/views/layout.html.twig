@@ -19,3 +19,13 @@
         </div>
     </div>
 {% endblock header %}
+
+{% block navbar %}
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <div class="nav-collapse collapse">
+                {{ knp_menu_render('main', {'currentClass': 'active', 'template': 'TarazzCoreBundle:Menu:knp_menu.html.twig'}) }}
+            </div>
+        </div>
+    </div>
+{% endblock navbar%}

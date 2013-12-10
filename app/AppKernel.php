@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new APY\DataGridBundle\APYDataGridBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Tarazz\CoreBundle\TarazzCoreBundle(),
             new Tarazz\AuthBundle\TarazzAuthBundle(),
             new Tarazz\BrandBundle\TarazzBrandBundle(),
